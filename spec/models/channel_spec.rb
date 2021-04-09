@@ -33,7 +33,7 @@ RSpec.describe Channel, type: :model do
     it "name must be unique" do
       channel.save!
       channel2 = Channel.new(valid_attributes)
-      expect(channel).not_to be_valid
+      expect(channel2).not_to be_valid
     end
 
     it "name should be less than 16 characters" do
