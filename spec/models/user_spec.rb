@@ -40,19 +40,26 @@ RSpec.describe User, type: :model do
     it "username must be unique" do
       user.save!
       user2 = User.new(valid_attributes)
-      expect(user).not_to be_valid
+      expect(user2).not_to be_valid
     end
 
-    it "username should be less than 11 characters" do
-      user.username = "0123456789a"
+    it "username should be less than 16 characters" do
+      user.username = "0123456789abcdef"
       expect(user).not_to be_valid
     end
 
     it "should not delete their messages upon destroying" do
       user.save!
-      channel.create!(name: general)
-      channel.messages.create!(user: user, content: "a lovely message")
-      expect { user.destroy }.not_to change { Message.count }.from(1).to(0)
+      channel = Channel.create!(name: "general")
+      message = channel.messages.create!(user: user, content: "a lovely message")
+      expect(User.find_by(username: user.username)).not_to eq(nil)
+      expect(Message.count).to eq(1)
+
+      user.destroy!
+
+      # cannot check if user is deleted through User.count, as the reserved deleted user may be created during the test
+      expect(User.find_by(username: user.username)).to eq(nil) 
+      expect(Message.count).to eq(1)
     end
   end
   
@@ -62,7 +69,7 @@ RSpec.describe User, type: :model do
       expect(user).to respond_to(:channels)
       expect(user.channels.count).to eq(0)
 
-      channel = Channel.create!(valid_attributes)
+      channel = Channel.create!(name: "general")
       channel.messages.create!(user: user, content: "a lovely message")
 
       expect(user.channels.count).to eq(1)
