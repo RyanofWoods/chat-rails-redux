@@ -62,7 +62,6 @@ RSpec.describe Channel, type: :model do
 
       channel.name = '0123456789abcdef'
       expect(channel).not_to be_valid
-
     end
   end
   
