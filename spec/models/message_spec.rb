@@ -22,12 +22,12 @@ RSpec.describe Message, type: :model do
   end
 
   context "validations:" do
-    it "has a content" do
-      expect(message.content).to eq("awesome text")
-    end
-
     it "should be valid with valid attributes" do
       expect(message).to be_valid
+    end
+
+    it "has a content" do
+      expect(message.content).to eq("awesome text")
     end
 
     it "content must be present" do

@@ -5,8 +5,9 @@ class User < ApplicationRecord
   :recoverable, :rememberable, :validatable
 
   validates :username, presence: true
-  validates :username, uniqueness: true
-  validates :username, length: { maximum: 15 }
+  validates :username, uniqueness: { case_sensitive: false } # case sensitive by default
+  validates :username, length: { in: 3..15 }
+  validates :username, format: { with: /\A(\w|-)+\z/, message: "%{value} must only contain letters, numbers or underscores" } # any letter, number or underscore
 
   has_many :messages
   has_many :channels, through: :messages

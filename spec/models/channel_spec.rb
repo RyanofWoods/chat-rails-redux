@@ -30,15 +30,39 @@ RSpec.describe Channel, type: :model do
       expect(channel).not_to be_valid
     end
 
-    it "name must be unique" do
+    it "name must be unique and case sensitive" do
       channel.save!
       channel2 = Channel.new(valid_attributes)
       expect(channel2).not_to be_valid
+
+      upcase_attr = valid_attributes
+      upcase_attr[:name] = valid_attributes[:name].upcase
+      channel3 = Channel.new(upcase_attr)
+      expect(channel3).not_to be_valid
     end
 
-    it "name should be less than 16 characters" do
+    it "name should only contain letters, numbers and dashes" do
+      invalid_names = [ 'gen!eral1', 'general.1', 'gen eral', ' javascript', 'ruby ' '#t3eral', 't@eeral45', 'gens(t)', '[deleted]', 'hi"hi"' ]
+      
+      invalid_names.each do |name|
+        channel.name = name
+        expect(channel).not_to be_valid
+      end
+      
+      channel.name = "General-123"
+      expect(channel).to be_valid
+    end
+
+    it "username should be between 3 and 15 characters (inclusive)" do
+      channel.name = "01"
+      expect(channel).not_to be_valid
+
+      channel.name = '0123456789abcde'
+      expect(channel).to be_valid
+
       channel.name = '0123456789abcdef'
       expect(channel).not_to be_valid
+
     end
   end
   

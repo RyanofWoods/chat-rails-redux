@@ -18,10 +18,6 @@ RSpec.describe User, type: :model do
       expect(user).to be_valid
     end
 
-    it "has a username" do
-      expect(user.username).to eq("cooluser123")
-    end
-
     it "email must be present" do
       user.email = nil
       expect(user).not_to be_valid
@@ -32,20 +28,46 @@ RSpec.describe User, type: :model do
       expect(user).not_to be_valid
     end
 
+    it "has a username" do
+      expect(user.username).to eq("cooluser123")
+    end
+
     it "username must be present" do
       user.username = nil
       expect(user).not_to be_valid
     end
 
-    it "username must be unique" do
+    it "username must be unique and case insensitive" do
       user.save!
-      user2 = User.new(valid_attributes)
+      attributes = valid_attributes
+      attributes[:username] = attributes[:username].upcase
+      attributes[:email] = "anunused@email.com"
+      user2 = User.new(attributes)
+
       expect(user2).not_to be_valid
     end
 
-    it "username should be less than 16 characters" do
+    it "username should be between 3 and 15 characters (inclusive)" do
+      user.username = "01"
+      expect(user).not_to be_valid
+
+      user.username = "0123456789abcde"
+      expect(user).to be_valid
+
       user.username = "0123456789abcdef"
       expect(user).not_to be_valid
+    end
+
+    it "username should only contain letters, numbers, dashes and underscores" do
+      invalid_usernames = [ 'te!st1', 'teSt.1', 'test ing', '#t3st', 't@est45', 'tes(t)', '[deleted]', 'hi"hi"' ]
+      
+      invalid_usernames.each do |user_string|
+        user.username = user_string
+        expect(user).not_to be_valid
+      end
+      
+      user.username = "TesT_123"
+      expect(user).to be_valid
     end
 
     it "should not delete their messages upon destroying" do
