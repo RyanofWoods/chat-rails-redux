@@ -2,12 +2,12 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-           ::recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable
 
   validates :username, presence: true
   validates :username, uniqueness: { case_sensitive: false } # case sensitive by default
   validates :username, length: { in: 3..15 }
-  validates :username, format: { with: /\A(\w|-)+\z/, message: "%{value} must only contain letters, numbers or underscores" } # any letter, number or underscore
+  validates :username, format: { with: /\A(\w|-)+\z/, message: "%{value} must only contain letters, numbers or underscores" }
 
   has_many :messages
   has_many :channels, through: :messages
@@ -27,7 +27,7 @@ class User < ApplicationRecord
       logger.error('Failed to find replacement_user in DB')
       logger.error('Failed to create replacement user based on ENV files')
       
-      logger.error('Have to delete all the users messages anyway based on GDPR')
+      logger.error("Delete users' messages regardless due to GDPR")
       self.messages.destroy_all
       return
     end
