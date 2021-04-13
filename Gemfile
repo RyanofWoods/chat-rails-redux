@@ -44,6 +44,10 @@ group :development, :test do
 
   # TDD
   gem 'rspec-rails', '~> 5.0.0'
+  gem 'faker'
+  gem 'factory_bot_rails'
+  gem 'database_cleaner-active_record'
+  gem 'database_cleaner-sequel'
 
   # formatting
   gem 'rubocop', require: false
