@@ -47,7 +47,6 @@ group :development, :test do
   gem 'faker'
   gem 'factory_bot_rails'
   gem 'database_cleaner-active_record'
-  gem 'database_cleaner-sequel'
 
   # formatting
   gem 'rubocop', require: false
