@@ -10,7 +10,7 @@ RSpec.describe "API", type: :request do
   let!(:channel) { channel_with_messages() }
 
   # '/api/v1/:channel_name'
-  before { get '/api/v1/test_channel' }
+  before { get '/api/v1/test_channel/messages' }
 
   context 'handles GET request' do
     it 'returns status code 200' do
