@@ -2,7 +2,7 @@ class Api::V1::MessagesController < ApplicationController
   before_action :set_channel, only: [ :index, :create ]
 
   def index
-    @messages = @channel&.messages || []
+    @messages = @channel&.messages
   end
 
   def create
