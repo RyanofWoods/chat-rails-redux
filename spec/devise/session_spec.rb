@@ -24,14 +24,16 @@ def login!
   click_button 'Log in'
 end
 
-describe "user can sign up and login", type: :feature do
-  it "user can signup" do
-    signup!()
-    expect(page).to have_content 'signed up successfully.'
-  end
-
-  it "user can login" do
-    login!()
-    expect(page).to have_content 'Signed in successfully.'
+describe "Devise", type: :feature do
+  context 'user can sign up and login' do
+    it "user can signup" do
+      signup!()
+      expect(page).to have_content 'signed up successfully.'
+    end
+  
+    it "user can login" do
+      login!()
+      expect(page).to have_content 'Signed in successfully.'
+    end
   end
 end
