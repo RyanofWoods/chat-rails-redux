@@ -1,7 +1,7 @@
 require 'rails_helper'
 require_relative '../support/devise_helper'
 
-RSpec.describe "API", type: :request do
+RSpec.describe "API#GET_MESSAGES", type: :request do
   include DeviseHelper
 
   def channel_with_messages(message_count: 20, channel_name: 'test_channel')
@@ -59,7 +59,3 @@ RSpec.describe "API", type: :request do
     end
   end
 end
-
-## FUTURE:
-# update a message
-# delete a message
