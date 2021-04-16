@@ -26,7 +26,7 @@ RSpec.describe "API#POST_MESSAGE", type: :request do
       expect(message_count()).to eq(count_before + 1)
     end
 
-    it '- message should be assigned to the correct channel and user' do
+    it 'message should be assigned to the correct channel and user' do
       call_post()
 
       created_message = Message.last
