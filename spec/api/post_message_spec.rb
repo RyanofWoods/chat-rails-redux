@@ -2,16 +2,6 @@ require 'rails_helper'
 require_relative '../support/api_helper'
 
 RSpec.describe "API#POST_MESSAGE", type: :request do
-  def channel_with_messages(message_count: 5, channel_name: 'test_channel')
-    FactoryBot.create(:channel, name: channel_name) do |channel|
-      FactoryBot.create_list(:message, message_count, channel: channel)
-    end
-  end
-  
-  def message_count
-    Channel.find_by(name: 'test_channel').messages.count
-  end
-
   let!(:channel) { channel_with_messages() }
   let!(:current_user) { FactoryBot.create(:user) }
   let!(:headers)  {
