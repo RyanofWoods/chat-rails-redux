@@ -1,50 +1,51 @@
 require 'rails_helper'
-require_relative '../support/devise_helper'
+require_relative '../support/api_helper'
 
 RSpec.describe "API#GET_MESSAGES", type: :request do
-  include DeviseHelper
-
-  def channel_with_messages(message_count: 20, channel_name: 'test_channel')
-    FactoryBot.create(:channel, name: channel_name) do |channel|
-      FactoryBot.create_list(:message, message_count, channel: channel)
-    end
-  end
-
   let!(:channel) { channel_with_messages() }
+  let!(:current_user) { FactoryBot.create(:user) }
+  let!(:headers)  {
+                    {
+                      "X-User-Email": current_user.email,
+                      "X-User-Token": current_user.authentication_token
+                    }
+                  }
+  let!(:parameters) { { "message": { "content": "some text" } } }
 
-  before do
-    get '/api/v1/channels/test_channel/messages'
+  def call_get(hdr = headers, channel_name = 'test_channel')
+    get "/api/v1/channels/#{channel_name}/messages", headers: hdr
   end
 
   context 'GET request when not logged in' do
-    it 'returns status code 401 (unauthorized)' do
+    it 'returns status code 401 (unauthorized) and error about signing in when given no email' do
+      call_get(without_key(headers, :"X-User-Email"))
+
       expect(response).to have_http_status(401)
+      expect(get_error(response)).to eq("You need to sign in or sign up before continuing.")
     end
 
-    it 'but gives authentication error' do
-      body = JSON.parse(response.body)
+    it 'returns status code 401 (unauthorized) and error about signing in when given no token' do
+      call_get(without_key(headers, :"X-User-Token"))
 
-      expect(body.has_key?("error")).to be(true)
-      expect(body["error"]).to eq("You need to sign in or sign up before continuing.")
+      expect(response).to have_http_status(401)
+      expect(get_error(response)).to eq("You need to sign in or sign up before continuing.")
     end
   end
   
   context 'GET request when logged in' do
-    before(:all) do
-      current_user = FactoryBot.create(:user)
-      login(current_user)
-    end
-
     it 'returns status code 200 (success)' do
+      call_get()
       expect(response).to have_http_status(:success)
     end
 
     it 'returns all messages from the #test_channel channel' do
-      body = JSON.parse(response.body)
-      expect(body.size).to eq(20)
+      call_get()
+      expect(JSON.parse(response.body).size).to eq(20)
     end
 
     it 'returns messages with the keys [id, user, content, created_at], but only shows users\' username' do
+      call_get()
+
       message = JSON.parse(response.body).first
 
       expect(message.has_key? "id").to be(true)
@@ -56,6 +57,19 @@ RSpec.describe "API#GET_MESSAGES", type: :request do
       expect(message["user"].has_key? "id").to be(false)
       expect(message["user"].has_key? "created_at").to be(false)
       expect(message["user"].has_key? "updated_at").to be(false)
+    end
+
+    it "should return an empty array on a new channel" do
+      new_channel = FactoryBot.create(:channel)
+      call_get(headers, new_channel.name)
+
+      expect(response).to have_http_status(:success)
+      expect(JSON.parse(response.body).length).to eq(0)
+    end
+
+    it 'returns error when channel does not exist' do
+      call_get(headers, "unexisting_channel")
+      expect(get_error(response)).to eq("This channel does not exist.")
     end
   end
 end
