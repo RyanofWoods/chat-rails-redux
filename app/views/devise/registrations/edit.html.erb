@@ -7,9 +7,9 @@
     <%= f.input :username,
               required: true,
               autofocus: true,
-              hint: "10 characters maximum",
-              input_html: { autocomplete: "email" }%>
-    <%= f.input :email, required: true, autofocus: true %>
+              hint: "3 characters minimum and 15 maximum, only letters, numbers, underscores and dashes"
+
+    <%= f.input :email, required: true %>
 
     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
       <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>

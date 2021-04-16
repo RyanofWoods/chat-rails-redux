@@ -70,22 +70,28 @@ RSpec.describe User, type: :model do
       expect(user).to be_valid
     end
 
+    it "should have an authentication token" do
+      user.save!
+
+      expect(user.authentication_token).not_to be(nil)
+    end
+  end
+  
+  context "associations:" do
     it "should not delete their messages upon destroying" do
       user.save!
       channel = Channel.create!(name: "general")
       message = channel.messages.create!(user: user, content: "a lovely message")
       expect(User.find_by(username: user.username)).not_to eq(nil)
       expect(Message.count).to eq(1)
-
+  
       user.destroy!
-
+  
       # cannot check if user is deleted through User.count, as the reserved deleted user may be created during the test
       expect(User.find_by(username: user.username)).to eq(nil) 
       expect(Message.count).to eq(1)
     end
-  end
-  
-  context "associations:" do
+
     it "should have many channels" do
       user.save!
       expect(user).to respond_to(:channels)
