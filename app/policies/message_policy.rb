@@ -12,10 +12,4 @@ class MessagePolicy < ApplicationPolicy
   def index?
     user_logged_in?
   end
-
-  private
-
-  def user_logged_in?
-    !@user.nil?
-  end
 end

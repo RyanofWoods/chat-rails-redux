@@ -5,7 +5,11 @@ class ChannelPolicy < ApplicationPolicy
     end
   end
 
+  def create?
+    user_logged_in?
+  end
+
   def index?
-    !@user.nil?
+    user_logged_in?
   end
 end
