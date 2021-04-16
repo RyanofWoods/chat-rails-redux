@@ -10,7 +10,6 @@ RSpec.describe "API#GET_MESSAGES", type: :request do
                       "X-User-Token": current_user.authentication_token
                     }
                   }
-  let!(:parameters) { { "message": { "content": "some text" } } }
 
   def call_get(hdr = headers, channel_name = 'test_channel')
     get "/api/v1/channels/#{channel_name}/messages", headers: hdr
@@ -64,6 +63,7 @@ RSpec.describe "API#GET_MESSAGES", type: :request do
       call_get(headers, new_channel.name)
 
       expect(response).to have_http_status(:success)
+      expect(JSON.parse(response.body).class).to be(Array)
       expect(JSON.parse(response.body).length).to eq(0)
     end
 
