@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
-  root to: 'pages#home' #'channels#show'
+  root to: 'pages#home'
   resources :channels, only: [ :show ]
 
   namespace :api, defaults: { format: :json } do
