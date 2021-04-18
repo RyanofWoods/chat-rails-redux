@@ -9,7 +9,8 @@ class User < ApplicationRecord
   validates :username, presence: true
   validates :username, uniqueness: { case_sensitive: false } # case sensitive by default
   validates :username, length: { in: 3..15 }
-  validates :username, format: { with: /\A(\w|-)+\z/, message: "%{value} must only contain letters, numbers or underscores" }
+  validates :username,
+            format: { with: /\A(\w|-)+\z/, message: "%{value} must only contain letters, numbers or underscores" }
 
   has_many :messages
   has_many :channels, through: :messages
@@ -23,25 +24,25 @@ class User < ApplicationRecord
   def change_messages_owner
     username = reserved_deleted_user_hash[:username]
     replacement_user = User.find_by(username: username) || create_replacement_user
-    
-    if !replacement_user
-      logger.error('Failed to replace messages with replacement user') 
+
+    unless replacement_user
+      logger.error('Failed to replace messages with replacement user')
       logger.error('Failed to find replacement_user in DB')
       logger.error('Failed to create replacement user based on ENV files')
-      
+
       logger.error("Delete users' messages regardless due to GDPR")
-      self.messages.destroy_all
+      messages.destroy_all
       return
     end
 
-    self.messages.each do |message|
+    messages.each do |message|
       message.update(user: replacement_user)
     end
   end
 
   def create_replacement_user
     reserve = reserved_deleted_user_hash
-    return nil if !reserve
+    return nil unless reserve
 
     replacement_user = User.new(reserve)
     replacement_user.save(validate: false)
@@ -54,6 +55,7 @@ class User < ApplicationRecord
     password = ENV["RESERVED_DELETED_USER_PASSWORD"]
 
     return nil if !username || !email || !password
+
     return { username: username, email: email, password: password }
   end
 end
