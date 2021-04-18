@@ -36,9 +36,15 @@ Style/FrozenStringLiteralComment:
   Enabled: false
 Layout/LineLength:
   Max: 120
+Metrics/MethodLength:
+  Max: 15
 Style/EmptyMethod:
   Enabled: false
 Bundler/OrderedGems:
   Enabled: false
 Style/SymbolArray:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
+Style/FormatStringToken:
   Enabled: false
