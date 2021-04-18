@@ -12,7 +12,8 @@ def signup!
 end
 
 def login!
-  User.find_by(username: 'test_username') || User.create!(email: 'user@example.com', password: 'password', username: "test_username" )
+  User.find_by(username: 'test_username') || User.create!(email: 'user@example.com', password: 'password',
+                                                          username: "test_username")
 
   visit '/users/sign_in'
 
@@ -27,12 +28,12 @@ end
 describe "Devise", type: :feature do
   context 'user can sign up and login' do
     it "user can signup" do
-      signup!()
+      signup!
       expect(page).to have_content 'signed up successfully.'
     end
-  
+
     it "user can login" do
-      login!()
+      login!
       expect(page).to have_content 'Signed in successfully.'
     end
   end

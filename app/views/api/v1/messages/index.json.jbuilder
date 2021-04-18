@@ -3,5 +3,5 @@ json.array! @messages do |message|
 
   json.user do
     json.extract! message.user, :username
-  end 
+  end
 end

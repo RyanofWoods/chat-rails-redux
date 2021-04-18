@@ -59,13 +59,13 @@ RSpec.describe User, type: :model do
     end
 
     it "username should only contain letters, numbers, dashes and underscores" do
-      invalid_usernames = [ 'te!st1', 'teSt.1', 'test ing', '#t3st', 't@est45', 'tes(t)', '[deleted]', 'hi"hi"' ]
-      
+      invalid_usernames = ['te!st1', 'teSt.1', 'test ing', '#t3st', 't@est45', 'tes(t)', '[deleted]', 'hi"hi"']
+
       invalid_usernames.each do |user_string|
         user.username = user_string
         expect(user).not_to be_valid
       end
-      
+
       user.username = "TesT_123"
       expect(user).to be_valid
     end
@@ -76,7 +76,7 @@ RSpec.describe User, type: :model do
       expect(user.authentication_token).not_to be(nil)
     end
   end
-  
+
   context "associations:" do
     it "should not delete their messages upon destroying" do
       user.save!
@@ -84,11 +84,11 @@ RSpec.describe User, type: :model do
       message = channel.messages.create!(user: user, content: "a lovely message")
       expect(User.find_by(username: user.username)).not_to eq(nil)
       expect(Message.count).to eq(1)
-  
+
       user.destroy!
-  
+
       # cannot check if user is deleted through User.count, as the reserved deleted user may be created during the test
-      expect(User.find_by(username: user.username)).to eq(nil) 
+      expect(User.find_by(username: user.username)).to eq(nil)
       expect(Message.count).to eq(1)
     end
 

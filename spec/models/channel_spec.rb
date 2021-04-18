@@ -16,7 +16,6 @@ RSpec.describe Channel, type: :model do
   end
 
   context "validations:" do
-
     it "should be valid with valid attributes" do
       expect(channel).to be_valid
     end
@@ -42,13 +41,14 @@ RSpec.describe Channel, type: :model do
     end
 
     it "name should only contain letters, numbers and dashes" do
-      invalid_names = [ 'gen!eral1', 'general.1', 'gen eral', ' javascript', 'ruby ' '#t3eral', 't@eeral45', 'gens(t)', '[deleted]', 'hi"hi"' ]
-      
+      invalid_names = ['gen!eral1', 'general.1', 'gen eral', ' javascript', 'ruby ' '#t3eral', 't@eeral45',
+                       'gens(t)', '[deleted]', 'hi"hi"']
+
       invalid_names.each do |name|
         channel.name = name
         expect(channel).not_to be_valid
       end
-      
+
       channel.name = "General-123"
       expect(channel).to be_valid
     end
@@ -64,7 +64,7 @@ RSpec.describe Channel, type: :model do
       expect(channel).not_to be_valid
     end
   end
-  
+
   context "associations:" do
     it "should have many messages" do
       channel.save!
@@ -80,9 +80,9 @@ RSpec.describe Channel, type: :model do
     it "should have many users through messages" do
       channel = Channel.create!(valid_attributes)
       expect(channel).to respond_to(:users)
-      
+
       expect(channel.users.count).to eq(0)
-      
+
       user.save!
       channel.messages.create!(user: user, content: "a lovely message")
       expect(channel.users.count).to eq(1)

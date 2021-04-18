@@ -1,6 +1,6 @@
 class Api::V1::MessagesController < Api::V1::BaseController
   acts_as_token_authentication_handler_for User
-  before_action :set_channel, only: [ :index, :create ]
+  before_action :set_channel, only: [:index, :create]
 
   def index
     authorize Message.new
@@ -42,11 +42,11 @@ class Api::V1::MessagesController < Api::V1::BaseController
 
   def render_invalid_message_error
     render json: { error: @message.errors.full_messages },
-      status: :unprocessable_entity
+           status: :unprocessable_entity
   end
 
   def render_invalid_channel_error
     render json: { error: "This channel does not exist." },
-      status: :unprocessable_entity
+           status: :unprocessable_entity
   end
 end
