@@ -41,7 +41,7 @@ RSpec.describe Channel, type: :model do
     end
 
     it "name should only contain letters, numbers and dashes" do
-      invalid_names = ['gen!eral1', 'general.1', 'gen eral', ' javascript', 'ruby ' '#t3eral', 't@eeral45',
+      invalid_names = ['gen!eral1', 'general.1', 'gen eral', ' javascript', 'ruby ', '#t3eral', 't@eeral45',
                        'gens(t)', '[deleted]', 'hi"hi"']
 
       invalid_names.each do |name|

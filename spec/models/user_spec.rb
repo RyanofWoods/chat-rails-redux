@@ -81,7 +81,7 @@ RSpec.describe User, type: :model do
     it "should not delete their messages upon destroying" do
       user.save!
       channel = Channel.create!(name: "general")
-      message = channel.messages.create!(user: user, content: "a lovely message")
+      channel.messages.create!(user: user, content: "a lovely message")
       expect(User.find_by(username: user.username)).not_to eq(nil)
       expect(Message.count).to eq(1)
 
