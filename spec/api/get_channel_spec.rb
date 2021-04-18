@@ -44,8 +44,8 @@ RSpec.describe "API#GET_CHANNELS", type: :request do
 
       channel = JSON.parse(response.body).first
 
-      expect(channel.has_key?("name")).to be(true)
-      expect(channel.has_key?("id")).to be(false)
+      expect(channel.key?("name")).to be(true)
+      expect(channel.key?("id")).to be(false)
     end
 
     it "should return an empty when there are no channels" do

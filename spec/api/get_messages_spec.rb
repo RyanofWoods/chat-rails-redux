@@ -47,15 +47,15 @@ RSpec.describe "API#GET_MESSAGES", type: :request do
 
       message = JSON.parse(response.body).first
 
-      expect(message.has_key?("id")).to be(true)
-      expect(message.has_key?("user")).to be(true)
-      expect(message.has_key?("content")).to be(true)
-      expect(message.has_key?("created_at")).to be(true)
+      expect(message.key?("id")).to be(true)
+      expect(message.key?("user")).to be(true)
+      expect(message.key?("content")).to be(true)
+      expect(message.key?("created_at")).to be(true)
 
-      expect(message["user"].has_key?("username")).to be(true)
-      expect(message["user"].has_key?("id")).to be(false)
-      expect(message["user"].has_key?("created_at")).to be(false)
-      expect(message["user"].has_key?("updated_at")).to be(false)
+      expect(message["user"].key?("username")).to be(true)
+      expect(message["user"].key?("id")).to be(false)
+      expect(message["user"].key?("created_at")).to be(false)
+      expect(message["user"].key?("updated_at")).to be(false)
     end
 
     it "should return an empty array on a new channel" do
