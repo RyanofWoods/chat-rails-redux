@@ -58,7 +58,7 @@ RSpec.describe "API#GET_CHANNELS", type: :request do
 
       expect(channel.key?("name")).to be(true)
       expect(channel.key?("id")).to be(false)
-      
+
       expect(channel.key?("owner_username")).to be(true)
     end
 
