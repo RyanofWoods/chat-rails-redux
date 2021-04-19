@@ -111,15 +111,25 @@ RSpec.describe User, type: :model do
       expect(Message.count).to eq(1)
     end
 
-    it "should have many channels" do
+    it "should have many #participated_channels through messages" do
       user.save!
-      expect(user).to respond_to(:channels)
-      expect(user.channels.count).to eq(0)
+      expect(user).to respond_to(:participated_channels)
+      expect(user.participated_channels.count).to eq(0)
 
       channel = Channel.create!(name: "general")
       channel.messages.create!(user: user, content: "a lovely message")
 
-      expect(user.channels.count).to eq(1)
+      expect(user.participated_channels.count).to eq(1)
+    end
+
+    it "should have many #owned_channels through creating them" do
+      user.save!
+      expect(user).to respond_to(:owned_channels)
+      expect(user.owned_channels.count).to eq(0)
+
+      user.owned_channels.create!(name: "general")
+
+      expect(user.owned_channels.count).to eq(1)
     end
   end
 end

@@ -16,7 +16,7 @@ RSpec.describe Channel, type: :model do
   end
 
   context "validations:" do
-    it "should be valid with valid attributes" do
+    it "should be valid with valid attributes (even without an owner)" do
       expect(channel).to be_valid
     end
 
@@ -86,6 +86,14 @@ RSpec.describe Channel, type: :model do
       user.save!
       channel.messages.create!(user: user, content: "a lovely message")
       expect(channel.users.count).to eq(1)
+    end
+
+    it "belongs to a user, but is renamed as owner" do
+      user.save!
+      new_channel = user.owned_channels.create(valid_attributes)
+
+      expect(new_channel).to respond_to(:owner)
+      expect(new_channel.owner).to eq(user)
     end
 
     it "should delete its messages upon destroying" do
