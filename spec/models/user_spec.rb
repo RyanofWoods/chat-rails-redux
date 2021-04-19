@@ -84,6 +84,16 @@ RSpec.describe User, type: :model do
 
       expect(user.authority).to eq("standard")
     end
+
+    it "should have .authority? method" do
+      user.save!
+      expect(user).to respond_to(:authority?)
+    end
+
+    it "should have .standard_authority? and .admin_authority? method" do
+      user.save!
+      expect(user).to respond_to(:standard_authority?, :admin_authority?)
+    end
   end
 
   context "associations:" do

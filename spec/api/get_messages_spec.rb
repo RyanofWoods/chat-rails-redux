@@ -42,7 +42,7 @@ RSpec.describe "API#GET_MESSAGES", type: :request do
       expect(JSON.parse(response.body).size).to eq(20)
     end
 
-    it 'returns messages with the keys [id, user, content, created_at], but only shows users\' username and authority' do
+    it 'returns messages with the keys [id, user, content, created_at], but only shows users username and authority' do
       call_get
 
       message = JSON.parse(response.body).first
