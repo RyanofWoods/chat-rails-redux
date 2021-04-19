@@ -43,7 +43,8 @@ CREATE TABLE public.channels (
     id bigint NOT NULL,
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    user_id bigint
 );
 
 
@@ -208,6 +209,13 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: index_channels_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_channels_on_user_id ON public.channels USING btree (user_id);
+
+
+--
 -- Name: index_messages_on_channel_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -266,6 +274,14 @@ ALTER TABLE ONLY public.messages
 
 
 --
+-- Name: channels fk_rails_e3493648f1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.channels
+    ADD CONSTRAINT fk_rails_e3493648f1 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -277,6 +293,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210409104651'),
 ('20210409135045'),
 ('20210415094626'),
-('20210419102057');
+('20210419102057'),
+('20210419114626');
 
 
