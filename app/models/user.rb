@@ -15,7 +15,8 @@ class User < ApplicationRecord
             format: { with: /\A(\w|-)+\z/, message: "%{value} must only contain letters, numbers or underscores" }
 
   has_many :messages
-  has_many :channels, through: :messages
+  has_many :participated_channels, through: :messages, source: :channel
+  has_many :owned_channels, class_name: "Channel"
 
   before_destroy :change_messages_owner
 
