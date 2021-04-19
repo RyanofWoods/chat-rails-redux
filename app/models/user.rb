@@ -6,6 +6,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  enum authority: { standard: "standard", admin: "admin" }, _suffix: true
+
   validates :username, presence: true
   validates :username, uniqueness: { case_sensitive: false } # case sensitive by default
   validates :username, length: { in: 3..15 }
