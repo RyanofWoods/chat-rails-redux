@@ -127,7 +127,7 @@ RSpec.describe User, type: :model do
       expect(user).to respond_to(:owned_channels)
       expect(user.owned_channels.count).to eq(0)
 
-      user.channels.create!(name: "general")
+      user.owned_channels.create!(name: "general")
 
       expect(user.owned_channels.count).to eq(1)
     end

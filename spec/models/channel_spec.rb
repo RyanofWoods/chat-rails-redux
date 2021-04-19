@@ -90,7 +90,7 @@ RSpec.describe Channel, type: :model do
 
     it "belongs to a user, but is renamed as owner" do
       user.save!
-      new_channel = user.channels.create(valid_attributes)
+      new_channel = user.owned_channels.create(valid_attributes)
 
       expect(new_channel).to respond_to(:owner)
       expect(new_channel.owner).to eq(user)
