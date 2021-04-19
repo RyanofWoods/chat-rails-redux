@@ -76,12 +76,8 @@ RSpec.describe User, type: :model do
       expect(user.authentication_token).not_to be(nil)
     end
 
-    it "should gain standard authority on create" do
-      expect(user.authority).to be(nil)
-      expect(user.valid?).to be(true)
-
+    it "should gain standard authority by default" do
       user.save!
-
       expect(user.authority).to eq("standard")
     end
 
