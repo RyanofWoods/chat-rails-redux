@@ -39,7 +39,19 @@ RSpec.describe "API#GET_CHANNELS", type: :request do
       expect(JSON.parse(response.body).size).to eq(Channel.count)
     end
 
-    it 'returns only channel name, no id and channel owners username' do
+    it 'returns only channel name, no id if there is no owner' do
+      call_get
+
+      channel = JSON.parse(response.body).first
+
+      expect(channel.key?("name")).to be(true)
+      expect(channel.key?("id")).to be(false)
+    end
+
+    it 'returns only channel name, no id and also channel owner_username if there is an owner' do
+      Channel.destroy_all
+      current_user.owned_channels.create(name: "general")
+
       call_get
 
       channel = JSON.parse(response.body).first
