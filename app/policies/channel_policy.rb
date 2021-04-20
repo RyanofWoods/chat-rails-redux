@@ -20,7 +20,7 @@ class ChannelPolicy < ApplicationPolicy
   def destroy?
     user_is_authenticated_and_authorized?
   end
-  
+
   private
 
   def user_is_authenticated_and_authorized?

@@ -1,8 +1,7 @@
 require 'rails_helper'
 require_relative '../support/api_helper'
-require 'pry-byebug'
 
-RSpec.describe "API#PATCH_CHANNELS", type: :request do
+RSpec.describe "API#PATCH_CHANNEL", type: :request do
   let!(:standard_user) { FactoryBot.create(:user) }
   let!(:another_user) { FactoryBot.create(:user) }
   let!(:admin_user) { FactoryBot.create(:user, admin: true) }
