@@ -1,6 +1,7 @@
 class Api::V1::ChannelsController < Api::V1::BaseController
   acts_as_token_authentication_handler_for User
-  after_action :verify_authorized, only: [:index]
+  before_action :set_channel, only: [:update]
+  after_action :verify_authorized, only: [:index, :update]
   after_action :verify_policy_scoped, only: [:index]
 
   def index
@@ -19,7 +20,17 @@ class Api::V1::ChannelsController < Api::V1::BaseController
     end
   end
 
+  def update
+    authorize @channel
+
+    @channel.update(channel_params)
+  end
+
   private
+
+  def set_channel
+    @channel = Channel.find_by(name: params[:id])
+  end
 
   def channel_params
     params.require(:channel).permit(:name)
