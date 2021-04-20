@@ -23,6 +23,8 @@ class Api::V1::ChannelsController < Api::V1::BaseController
   def update
     authorize @channel
 
+    render_bad_content if channel_params == {}
+
     @channel.update(channel_params)
   end
 
@@ -34,6 +36,11 @@ class Api::V1::ChannelsController < Api::V1::BaseController
 
   def channel_params
     params.require(:channel).permit(:name)
+  end
+
+  def render_bad_content
+    render json: { error: "You need to supply a valid channel parameter to update, such as name." },
+           status: :bad_request
   end
 
   def render_invalid_channel_error
