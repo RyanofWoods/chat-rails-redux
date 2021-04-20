@@ -29,7 +29,7 @@ class Api::V1::ChannelsController < Api::V1::BaseController
   end
 
   def destroy
-
+    authorize @channel
   end
 
   private
