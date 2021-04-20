@@ -1,9 +1,5 @@
 json.array! @channels do |channel|
-  json.extract! channel, :name
+  json.channel_name channel.name
 
-  if channel.owner
-    json.owner_username do
-      json.extract! channel.owner, :username
-    end
-  end
+  json.owner_username channel.owner&.username
 end
