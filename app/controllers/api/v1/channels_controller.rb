@@ -30,6 +30,8 @@ class Api::V1::ChannelsController < Api::V1::BaseController
 
   def destroy
     authorize @channel
+
+    @channel.destroy
   end
 
   private
