@@ -56,28 +56,34 @@ RSpec.describe "API#DELETE_CHANNEL", type: :request do
     # standard user deleting their own channel
     it 'should pass and return status code success when you are are owner of the channel' do
       standards_channel.save!
+      count_before = Channel.count
+
       call_delete(standards_channel, headers(standard_user))
 
       expect(response).to have_http_status(:success)
-      expect(Channel.find(standards_channel.id)).to be(nil)
+      expect(Channel.count).to eq(count_before - 1)
     end
 
     # admin user deleting another users' channel
     it 'should pass and return status code success when you are are an admin' do
       standards_channel.save!
+      count_before = Channel.count
+
       call_delete(standards_channel, headers(admin_user))
 
       expect(response).to have_http_status(:success)
-      expect(Channel.find(standards_channel.id)).to be(nil)
+      expect(Channel.count).to eq(count_before - 1)
     end
 
     # admin user deleting their own channel
     it 'should pass and return status code success when you are are an admin and owner' do
       admins_channel.save!
+      count_before = Channel.count
+
       call_delete(admins_channel, headers(admin_user))
 
       expect(response).to have_http_status(:success)
-      expect(Channel.find(admins_channel.id)).to be(nil)
+      expect(Channel.count).to eq(count_before - 1)
     end
   end
 end
