@@ -32,8 +32,7 @@ export function createMessage(channel, author, content) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ author, content })
-  })
-    .then(response => response.json());
+  }).then(response => response.json());
 
   return {
     type: CREATE_MESSAGE,
