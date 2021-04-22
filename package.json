@@ -33,12 +33,12 @@
   },
   "jest": {
     "roots": [
-      "spec/javascript"
+      "spec/react"
     ],
     "moduleDirectories": [
       "node_modules",
       "app/javascript"
     ],
-    "setupFilesAfterEnv": ["./spec/javascript/setupTests.js"]
+    "setupFilesAfterEnv": ["./spec/react/setupTests.js"]
   }
 }
