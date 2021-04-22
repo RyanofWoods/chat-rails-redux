@@ -85,5 +85,16 @@ RSpec.describe "API#DELETE_CHANNEL", type: :request do
       expect(response).to have_http_status(:success)
       expect(Channel.count).to eq(count_before - 1)
     end
+
+    # general channel cannot be deleted
+    it 'should not be able to delete the general channel as an admin' do
+      general_channel = FactoryBot.create(:channel, name: "general")
+      count_before = Channel.count
+
+      call_delete(general_channel, headers(admin_user))
+      expect(response).to have_http_status(400) # bad content
+      expect(get_error(response)).to eq("Request declined. The #general channel cannot be deleted.")
+      expect(Channel.count).to eq(count_before)
+    end
   end
 end
