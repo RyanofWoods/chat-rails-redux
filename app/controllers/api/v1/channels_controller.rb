@@ -23,18 +23,20 @@ class Api::V1::ChannelsController < Api::V1::BaseController
   def update
     authorize @channel
 
-    #render_general_channel_error if @channel.name == "general"
-
-    render_bad_content if channel_params == {}
-
-    @channel.update(channel_params)
+    if channel_params == {}
+      render_bad_content
+    elsif @channel.name == "general"
+      render_general_channel_update_error
+    else
+      @channel.update(channel_params)
+    end
   end
 
   def destroy
     authorize @channel
 
     if @channel.name == "general"
-      render_general_channel_error
+      render_general_channel_delete_error
     else
       @channel.destroy
     end
@@ -50,7 +52,12 @@ class Api::V1::ChannelsController < Api::V1::BaseController
     params.require(:channel).permit(:name)
   end
 
-  def render_general_channel_error
+    def render_general_channel_update_error
+    render json: { error: "Request declined. The #general channel's properties cannot be changed." },
+           status: :bad_request
+  end
+
+  def render_general_channel_delete_error
     render json: { error: "Request declined. The #general channel cannot be deleted." },
            status: :bad_request
   end
