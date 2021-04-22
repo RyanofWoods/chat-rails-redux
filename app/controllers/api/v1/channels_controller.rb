@@ -24,9 +24,9 @@ class Api::V1::ChannelsController < Api::V1::BaseController
     authorize @channel
 
     if channel_params == {}
-      render_bad_content
+      render_bad_request "You need to supply a valid channel parameter to update, such as name."
     elsif @channel.name == "general"
-      render_general_channel_update_error
+      render_bad_request "Request declined. The #general channel's properties cannot be changed."
     else
       @channel.update(channel_params)
     end
@@ -36,7 +36,7 @@ class Api::V1::ChannelsController < Api::V1::BaseController
     authorize @channel
 
     if @channel.name == "general"
-      render_general_channel_delete_error
+      render_bad_request "Request declined. The #general channel cannot be deleted."
     else
       @channel.destroy
     end
@@ -52,18 +52,8 @@ class Api::V1::ChannelsController < Api::V1::BaseController
     params.require(:channel).permit(:name)
   end
 
-    def render_general_channel_update_error
-    render json: { error: "Request declined. The #general channel's properties cannot be changed." },
-           status: :bad_request
-  end
-
-  def render_general_channel_delete_error
-    render json: { error: "Request declined. The #general channel cannot be deleted." },
-           status: :bad_request
-  end
-
-  def render_bad_content
-    render json: { error: "You need to supply a valid channel parameter to update, such as name." },
+  def render_bad_request(error)
+    render json: { error: error },
            status: :bad_request
   end
 

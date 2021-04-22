@@ -120,7 +120,7 @@ RSpec.describe "API#PATCH_CHANNEL", type: :request do
       general_channel = FactoryBot.create(:channel, name: "general")
 
       call_patch(general_channel, headers(admin_user), { channel: { name: "new_name" } })
-  
+
       expect(response).to have_http_status(400) # bad content
       expect(get_error(response)).to eq("Request declined. The #general channel's properties cannot be changed.")
       expect(Channel.find(general_channel.id).name).to eq("general")
