@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import configureStore from "redux-mock-store";
@@ -34,7 +34,11 @@ describe("<ChannelList/>", () => {
     expect(component.toJSON()).toMatchSnapshot();
   });
  
-  it("should render a <li> for each channel", () => {
+  it("should contain one <ul>", () => {
+    expect(component.root.find("ul")).toEqual(true);
+  });
+
+  it("should render a <li> for each channel and <ul> be the parent", () => {
     expect(component.root.findAllByType("li").length).toBe(3)
   });
 

@@ -1,6 +1,7 @@
 import React from "react";
 import Message from "chat/components/message";
 import { shallow } from "enzyme";
+import { childText } from "../utils";
 
 describe("<Message/>", () => {
   const message = {
@@ -10,14 +11,20 @@ describe("<Message/>", () => {
   };
   const wrapper = shallow(<Message message={message} />);
 
-  it("should the author in a div with the class .message-author", () => {
-    const authorResult = wrapper.find(".message-author").text();
-    expect(authorResult).toBe(message.author);
+  it("should be a li", () => {
+    expect(wrapper.is("li")).toEqual(true);
   });
 
-  it("should the message content in a div with the class .message-content", () => {
-    const contentResult = wrapper.find(".message-content").text();
-    expect(contentResult).toBe(message.content);
+  it("should have a .message class", () => {
+    expect(wrapper.hasClass("message")).toEqual(true);
+  });
+
+  it("should have the author in a div with the class .message-author", () => {
+    expect(childText(wrapper, ".message-author")).toBe(message.author);
+  });
+
+  it("should have the message content in a div with the class .message-content", () => {
+    expect(childText(wrapper, ".message-content")).toBe(message.content);
   });
 
   it("should have the message created_at date formatted in a div with the class .message-date", () => {
@@ -31,7 +38,6 @@ describe("<Message/>", () => {
     }).format(message.created_at);
 
     const expectedDateStr = `${expTime}, ${expDate}`;
-    const dateResult = wrapper.find(".message-date").text();
-    expect(dateResult).toBe(expectedDateStr);
+    expect(childText(wrapper, ".message-date")).toBe(expectedDateStr);
   });
 });

@@ -14,13 +14,13 @@ const Message = (props) => {
   const formattedDateStr = `${formattedTime}, ${formattedDate}`;
 
   return (
-    <div className="message">
+    <li className="message">
       <div className="message-info">
         <div className="message-author">{author}</div>
         <div className="message-date">{formattedDateStr}</div>
       </div>
       <div className="message-content">{content}</div>
-    </div>
+    </li>
   );
 };
 
