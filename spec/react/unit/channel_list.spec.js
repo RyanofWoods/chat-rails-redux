@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
-import configureStore from "redux-mock-store";
-import ChannelList from "chat/containers/channel_list";
+import configureStore from 'redux-mock-store';
+import ChannelList from 'chat/containers/channel_list';
 
 const mockStore = configureStore([]);
 
-describe("<ChannelList/>", () => {
+describe('<ChannelList/>', () => {
   let store;
   let component;
-  let channels = ["general", "ruby", "javascript"]
+  const channels = ['general', 'ruby', 'javascript'];
 
   beforeEach(() => {
     store = mockStore({
@@ -18,45 +18,45 @@ describe("<ChannelList/>", () => {
 
     component = renderer.create(
       <Provider store={store}>
-        <ChannelList selectedChannel="ruby" />
+        <ChannelList selectedChannel='ruby' />
       </Provider>
     );
   });
 
   const channelListItems = () => {
-    const children = component.toJSON().children;
-    const ul = children.find((element) => element.type === "ul");
+    const { children } = component.toJSON();
+    const ul = children.find((element) => element.type === 'ul');
 
     return ul.children;
   };
 
-  it("should render with given state from Redux store", () => {
+  it('should render with given state from Redux store', () => {
     expect(component.toJSON()).toMatchSnapshot();
   });
- 
-  it("should contain one <ul>", () => {
-    expect(component.root.find("ul")).toEqual(true);
+
+  it('should contain one <ul>', () => {
+    expect(component.root.findAllByType('ul').length).toBe(1);
   });
 
-  it("should render a <li> for each channel and <ul> be the parent", () => {
-    expect(component.root.findAllByType("li").length).toBe(3)
+  it('should render a <li> for each channel and <ul> be the parent', () => {
+    expect(component.root.findAllByType('li').length).toBe(3);
   });
 
-  it("each channel <li> should be prefixed with a #", () => {
+  it('each channel <li> should be prefixed with a #', () => {
     channelListItems().forEach((channelInstance, index) => {
-      expect(channelInstance.children.join("")).toBe(`#${channels[index]}`);
+      expect(channelInstance.children.join('')).toBe(`#${channels[index]}`);
     });
   });
 
-  it("the selected channel should have .selected class", () => {
+  it('the selected channel should have .selected class', () => {
     channelListItems().forEach((channelInstance, index) => {
       if (index === 1) {
         expect(channelInstance.props.className).toEqual(
-          expect.stringContaining("selected")
+          expect.stringContaining('selected')
         );
       } else {
         expect(channelInstance.props.className).toEqual(
-          expect.not.stringContaining("selected")
+          expect.not.stringContaining('selected')
         );
       }
     });
