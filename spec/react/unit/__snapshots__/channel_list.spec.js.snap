@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ChannelList/> should render with given state from Redux store 1`] = `
+<div
+  className="channel-container"
+>
+  <div
+    className="channel-container-header"
+  >
+    Channel List
+  </div>
+  <ul
+    className="list-group"
+  >
+    <li
+      className="list-group-item"
+      onClick={[Function]}
+    >
+      #
+      general
+    </li>
+    <li
+      className="list-group-item selected"
+      onClick={[Function]}
+    >
+      #
+      ruby
+    </li>
+    <li
+      className="list-group-item"
+      onClick={[Function]}
+    >
+      #
+      javascript
+    </li>
+  </ul>
+</div>
+`;
